@@ -1,0 +1,22 @@
+stages:
+  - build
+  - test
+  - deploy
+
+test:
+  stage: test
+  script:
+    - npm install
+    - npm test
+
+build:
+  stage: build
+  script:
+    - docker build -t $$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
+    - docker login -u $$$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker push postgres
+
+deploy:
+  stage: deploy
+  script:
+    -docker-compose up -d
